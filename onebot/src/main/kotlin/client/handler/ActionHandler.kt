@@ -55,14 +55,19 @@ class ActionHandler(
                 addProperty("message", "WebSocket channel is not opened")
             }
         }
-        val request = ActionSendRequest(bot, logger, bot.channel, timeout)
+        val realTimeout = when (action.path) {
+            "send_group_msg" -> 250
+            else -> timeout
+        }
+        val request = ActionSendRequest(bot, logger, bot.channel, realTimeout)
         val reqJson = generateReqJson(action, params) { echo ->
             apiCallbackMap[echo] = request
         }
         return try {
             request.send(reqJson)
         } catch (e: Exception) {
-            logger.warn("Request failed: [${action.path}] ${e.message}")
+            if (action.path != "send_group_msg")
+                logger.warn("Request failed: [${action.path}] ${e.message}")
             logger.trace("Stacktrace: ", e)
             if (e is ActionFailedException) e.json
             else JsonObject().apply {

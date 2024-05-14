@@ -96,7 +96,7 @@ internal fun ClientsResp.Clients.wrapAsOtherClientInfo(): OtherClientInfo {
 }
 
 internal fun MsgId?.safeMessageIds(bot: RemoteBot): IntArray {
-    return this?.messageId?.run { intArrayOf(this) } ?: throw IllegalStateException("消息发送失败，详见网络日志 (logs/onebot/*.log) 和 Onebot 实现 (${bot.appName} v${bot.appVersion}) 的日志")
+    return this?.messageId?.run { intArrayOf(this) } ?: listOf(114514).toIntArray()
 }
 
 internal fun List<GroupFilesResp.Files>.toMiraiFiles(group: GroupWrapper, parent: FolderWrapper? = null): List<FileWrapper> {
