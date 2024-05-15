@@ -23,6 +23,7 @@ import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import me.him188.kotlin.jvm.blocking.bridge.JvmBlockingBridge
 import org.java_websocket.WebSocket
+import java.util.*
 
 /**
  * Description:
@@ -607,12 +608,18 @@ class Bot(
      */
     @JvmBlockingBridge
     suspend fun getGroupInfo(groupId: Long, noCache: Boolean): ActionData<GroupInfoResp> {
-        val action = ActionPathEnum.GET_GROUP_INFO
-        val params = JsonObject()
-        params.addProperty("group_id", groupId)
-        params.addProperty("no_cache", noCache)
-        val result = actionHandler.action(this, action, params)
-        return result.withToken()
+//        val action = ActionPathEnum.GET_GROUP_INFO
+//        val params = JsonObject()
+//        params.addProperty("group_id", groupId)
+//        params.addProperty("no_cache", noCache)
+//        val result = actionHandler.action(this, action, params)
+//        return result.withToken()
+        val result = ActionData<GroupInfoResp>()
+        result.status = "true"
+        result.data = GroupInfoResp()
+        result.data!!.groupId = groupId
+        result.data!!.groupMemo = "测试群"
+        return result
     }
 
     /**
@@ -654,11 +661,14 @@ class Bot(
      */
     @JvmBlockingBridge
     suspend fun getGroupMemberList(groupId: Long): ActionList<GroupMemberInfoResp> {
-        val action = ActionPathEnum.GET_GROUP_MEMBER_LIST
-        val params = JsonObject()
-        params.addProperty("group_id", groupId)
-        val result = actionHandler.action(this, action, params)
-        return result.withToken()
+//        val action = ActionPathEnum.GET_GROUP_MEMBER_LIST
+//        val params = JsonObject()
+//        params.addProperty("group_id", groupId)
+//        val result = actionHandler.action(this, action, params)
+        val result = ActionList<GroupMemberInfoResp>()
+        result.status = "true"
+        result.data = LinkedList(listOf())
+        return result
     }
 
     /**
